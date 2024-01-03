@@ -1,8 +1,12 @@
 # Frontend Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
 
-Currently, two official plugins are available:
+Welcome to the Frontend Playground! This repository is designed as a space for developers to learn, experiment, and test various frontend technologies. Whether you're a beginner looking to grasp the basics or an experienced developer testing new ideas, this playground is for you!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+
+- Interactive examples of HTML, CSS, and JavaScript.
+- React playgrounds.
+- Responsive design testing tools.
+- Performance analysis utilities.
