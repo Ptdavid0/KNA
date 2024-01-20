@@ -2,11 +2,13 @@
 
 ## Introduction
 
-Welcome to the KNA - Kōdo no asobiba! This repository is designed as a space for developers to learn, experiment, and test various frontend technologies. Whether you're a beginner looking to grasp the basics or an experienced developer testing new ideas, this playground is for you!
+Welcome to the KNA - Kōdo no asobiba! 
+
+This repository is designed as a space of learning, experiments, and test for various frontend technologies. Feel free to take a look on it !
+
+OBS: Some of the code you will find in this repository was created by others.
 
 ## Features
 
-- Interactive examples of HTML, CSS, and JavaScript.
-- React playgrounds.
-- Responsive design testing tools.
-- Performance analysis utilities.
+- Starry Night 
+- Fireworks
