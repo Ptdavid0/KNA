@@ -11,4 +11,5 @@ OBS: Some of the code you will find in this repository was created by others.
 ## Features
 
 - Starry Night 
-- Fireworks
+- Fireworks (under construction)
+- Side Menu (under construction)
