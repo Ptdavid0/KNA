@@ -1,9 +1,7 @@
-import React from "react";
+import CubeGrid from "./components/CubeGrid";
 
-import { Container } from "./styles";
-
-const Home: React.FC = () => {
-  return <Container />;
+const Home = () => {
+  return <CubeGrid />;
 };
 
 export default Home;
