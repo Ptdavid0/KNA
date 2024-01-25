@@ -1,37 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { Container } from "./styles";
 import Cube from "../Cube";
-import useWindowSize from "../../hooks/useWindowSize";
+import { useCubeGrid } from "../../hooks/useCubeGrid";
+
+import { Container } from "./styles";
 
 const CubeGrid = () => {
   const [activeCubeIndex, setActiveCubeIndex] = useState(0);
   const [tailSize, setTailSize] = useState(6);
-  const [randomActiveCubes, setRandomActiveCubes] = useState<number[]>([]);
-  const [width, height] = useWindowSize();
 
-  // calculates the number of cubes that fit in the screen
-  const numberOfCubes = useMemo(() => {
-    const cubeSize = 20;
-    const spaceBetween = 10;
-    const totalSizePerCube = cubeSize + spaceBetween;
-    const horizontalCubes = Math.floor(width / totalSizePerCube);
-    const verticalCubes = Math.floor(height / totalSizePerCube);
-    return horizontalCubes * verticalCubes;
-  }, [width, height]);
-
-  // generates the random active cubes
-  const generateRandomActiveCubes = useCallback(() => {
-    const randomCubes: number[] = [];
-    const numberOfRandomCubes = Math.floor(numberOfCubes / 10);
-    while (randomCubes.length < numberOfRandomCubes) {
-      const randomIndex = Math.floor(Math.random() * numberOfCubes);
-      if (!randomCubes.includes(randomIndex)) {
-        randomCubes.push(randomIndex);
-      }
-    }
-    setRandomActiveCubes(randomCubes);
-  }, [numberOfCubes]);
+  const {
+    numberOfCubes,
+    randomActiveCubes,
+    setRandomActiveCubes,
+    generateRandomActiveCubes,
+  } = useCubeGrid();
 
   // calculates the color based on the percentage
   const getColor = (percentage: number) => {
@@ -66,20 +49,24 @@ const CubeGrid = () => {
     generateRandomActiveCubes();
   }, []);
 
+  const updateRandomActiveCubes = (newIndex: number) => {
+    setRandomActiveCubes((prevRandomActiveCubes) => {
+      const index = prevRandomActiveCubes.indexOf(newIndex);
+      if (index > -1) {
+        const updatedRandomActiveCubes = [...prevRandomActiveCubes];
+        updatedRandomActiveCubes.splice(index, 1);
+        setTailSize((prevTailSize) => prevTailSize + 1);
+        return updatedRandomActiveCubes;
+      }
+      return prevRandomActiveCubes;
+    });
+  };
+
   // updates the active cube
   const updateTailHead = useCallback(() => {
     setActiveCubeIndex((prevIndex) => {
       const newIndex = (prevIndex + 1) % numberOfCubes;
-      setRandomActiveCubes((prevRandomActiveCubes) => {
-        const index = prevRandomActiveCubes.indexOf(newIndex);
-        if (index > -1) {
-          const updatedRandomActiveCubes = [...prevRandomActiveCubes];
-          updatedRandomActiveCubes.splice(index, 1);
-          setTailSize((prevTailSize) => prevTailSize + 1);
-          return updatedRandomActiveCubes;
-        }
-        return prevRandomActiveCubes;
-      });
+      updateRandomActiveCubes(newIndex);
       if (newIndex === 0) resetGrid();
       return newIndex;
     });
