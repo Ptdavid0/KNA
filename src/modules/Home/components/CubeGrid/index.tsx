@@ -8,6 +8,7 @@ import { Container } from "./styles";
 const CubeGrid = () => {
   const [activeCubeIndex, setActiveCubeIndex] = useState(0);
   const [tailSize, setTailSize] = useState(6);
+  const [canMove, setCanMove] = useState(true);
 
   const {
     numberOfCubes,
@@ -15,6 +16,18 @@ const CubeGrid = () => {
     setRandomActiveCubes,
     generateRandomActiveCubes,
   } = useCubeGrid();
+
+  // Not working properly, causing the update Random Active Cubes to be called twice
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      console.log(event.code);
+      if (event.code === "Space") {
+        setCanMove((prevCanMove) => !prevCanMove);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // calculates the color based on the percentage
   const getColor = (percentage: number) => {
@@ -64,13 +77,14 @@ const CubeGrid = () => {
 
   // updates the active cube
   const updateTailHead = useCallback(() => {
+    if (!canMove) return;
     setActiveCubeIndex((prevIndex) => {
       const newIndex = (prevIndex + 1) % numberOfCubes;
       updateRandomActiveCubes(newIndex);
       if (newIndex === 0) resetGrid();
       return newIndex;
     });
-  }, [numberOfCubes]);
+  }, [numberOfCubes, canMove]);
 
   // sets the active cube
   useEffect(() => {
@@ -91,3 +105,9 @@ const CubeGrid = () => {
 };
 
 export default CubeGrid;
+
+// A FAZER
+
+// - [ ] Ao pressionar espaço, o cubo ativo deve mudar de direção
+// - [ ] Os cubos aleatorios devem ter um efeito de fade in e fade out na cor
+// - [ ] Melhorar as cores do tail
