@@ -10,6 +10,7 @@ OBS: Some of the code you will find in this repository was created by others.
 
 ## Features
 
-- Starry Night 
+- Home Page: Light sliders
+- Starry Night
 - Fireworks (under construction)
 - Side Menu (under construction)
