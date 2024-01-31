@@ -6,10 +6,7 @@ import { useCubeGrid } from "../../hooks/useCubeGrid";
 import { Container } from "./styles";
 
 const CubeGrid = () => {
-  const [activeCubeIndex, setActiveCubeIndex] = useState(0);
   const [cubesWithTails, setCubesWithTails] = useState([]);
-  const [tailSize, setTailSize] = useState(6);
-  const [canMove, setCanMove] = useState(true);
 
   const {
     numberOfCubes,
@@ -17,18 +14,6 @@ const CubeGrid = () => {
     setRandomActiveCubes,
     generateRandomActiveCubes,
   } = useCubeGrid();
-
-  // Not working properly, causing the update Random Active Cubes to be called twice
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event.code);
-      if (event.code === "Space") {
-        setCanMove((prevCanMove) => !prevCanMove);
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
 
   useEffect(() => {
     // Let's say you want 5 cubes with tails
@@ -75,53 +60,6 @@ const CubeGrid = () => {
     return "#17171e";
   };
 
-  // calculates the color of the cube based on its distance from the active cube - tail effect
-  // const calculateCubeColor = useCallback(
-  //   (index: number) => {
-  //     const distanceFromActive =
-  //       (activeCubeIndex - index + numberOfCubes) % numberOfCubes;
-  //     if (distanceFromActive > tailSize) {
-  //       if (randomActiveCubes.includes(index)) return "#f9ff00";
-  //       return "#17171e";
-  //     }
-
-  //     const percentage = 100 - (distanceFromActive / tailSize) * 100;
-  //     return getColor(percentage);
-  //   },
-  //   [activeCubeIndex, numberOfCubes, tailSize, randomActiveCubes]
-  // );
-
-  // resets the grid when the active cube reaches the end
-  const resetGrid = useCallback(() => {
-    setActiveCubeIndex(0);
-    setTailSize(6);
-    generateRandomActiveCubes();
-  }, []);
-
-  const updateRandomActiveCubes = (newIndex: number) => {
-    setRandomActiveCubes((prevRandomActiveCubes) => {
-      const index = prevRandomActiveCubes.indexOf(newIndex);
-      if (index > -1) {
-        const updatedRandomActiveCubes = [...prevRandomActiveCubes];
-        updatedRandomActiveCubes.splice(index, 1);
-        setTailSize((prevTailSize) => prevTailSize + 1);
-        return updatedRandomActiveCubes;
-      }
-      return prevRandomActiveCubes;
-    });
-  };
-
-  // updates the active cube
-  const updateTailHead = useCallback(() => {
-    if (!canMove) return;
-    setActiveCubeIndex((prevIndex) => {
-      const newIndex = (prevIndex + 1) % numberOfCubes;
-      updateRandomActiveCubes(newIndex);
-      if (newIndex === 0) resetGrid();
-      return newIndex;
-    });
-  }, [numberOfCubes, canMove]);
-
   const calculateCubeColor = useCallback(
     (index: any) => {
       // Check if index is part of any tail
@@ -166,7 +104,6 @@ export default CubeGrid;
 
 // A FAZER
 
-// - [ ] Ao pressionar espaço, o cubo ativo deve mudar de direção
 // - [ ] Os cubos aleatorios devem ter um efeito de fade in e fade out na cor
 // - [ ] Melhorar as cores do tail
 
