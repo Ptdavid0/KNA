@@ -4,6 +4,7 @@ import useWindowSize from "./useWindowSize";
 export const useCubeGrid = () => {
   const [width, height] = useWindowSize();
   const [randomActiveCubes, setRandomActiveCubes] = useState<number[]>([]);
+  const [numberOfCubesPerRow, setNumberOfCubesPerRow] = useState<number>(0);
 
   const numberOfCubes = useMemo(() => {
     const cubeSize = 20;
@@ -11,6 +12,7 @@ export const useCubeGrid = () => {
     const totalSizePerCube = cubeSize + spaceBetween;
     const horizontalCubes = Math.floor(width / totalSizePerCube);
     const verticalCubes = Math.floor(height / totalSizePerCube);
+    setNumberOfCubesPerRow(horizontalCubes);
     return horizontalCubes * verticalCubes;
   }, [width, height]);
 
@@ -31,5 +33,6 @@ export const useCubeGrid = () => {
     randomActiveCubes,
     setRandomActiveCubes,
     generateRandomActiveCubes,
+    numberOfCubesPerRow,
   };
 };

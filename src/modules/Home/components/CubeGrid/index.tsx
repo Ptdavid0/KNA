@@ -7,10 +7,14 @@ import { Container } from "./styles";
 
 const CubeGrid = () => {
   const [cubesWithTails, setCubesWithTails] = useState([]);
-  const numberOfTailedCubes = 5;
+  const numberOfTailedCubes = 10;
 
-  const { numberOfCubes, randomActiveCubes, generateRandomActiveCubes } =
-    useCubeGrid();
+  const {
+    numberOfCubes,
+    randomActiveCubes,
+    generateRandomActiveCubes,
+    numberOfCubesPerRow,
+  } = useCubeGrid();
 
   useEffect(() => {
     // Let's say you want 5 cubes with tails
@@ -31,9 +35,14 @@ const CubeGrid = () => {
 
   const updateCubesWithTails = useCallback(() => {
     setCubesWithTails((prevCubesWithTails: any) =>
-      prevCubesWithTails.map((cube: any) => {
-        // Calculate new head position
-        let newIndex = (cube.index + 1) % numberOfCubes;
+      prevCubesWithTails.map((cube: any, index: number) => {
+        let direction = index % 2 ? -1 : 1;
+
+        let newIndex = (cube.index + direction) % numberOfCubes;
+
+        if (newIndex % numberOfCubesPerRow === 0) {
+          newIndex = Math.floor(Math.random() * numberOfCubes);
+        }
 
         // Create a new tail that includes the old head
         let newTail = [cube.index, ...cube.tail];
@@ -48,7 +57,7 @@ const CubeGrid = () => {
         };
       })
     );
-  }, [numberOfCubes]);
+  }, [numberOfCubes, numberOfCubesPerRow]);
 
   // calculates the color based on the percentage
   const getColor = (percentage: number) => {
