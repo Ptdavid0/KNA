@@ -7,24 +7,25 @@ import { Container } from "./styles";
 
 const CubeGrid = () => {
   const [cubesWithTails, setCubesWithTails] = useState([]);
+  const numberOfTailedCubes = 5;
 
-  const {
-    numberOfCubes,
-    randomActiveCubes,
-    setRandomActiveCubes,
-    generateRandomActiveCubes,
-  } = useCubeGrid();
+  const { numberOfCubes, randomActiveCubes, generateRandomActiveCubes } =
+    useCubeGrid();
 
   useEffect(() => {
     // Let's say you want 5 cubes with tails
-    const initialCubesWithTails = Array.from({ length: 5 }, () => {
-      return {
-        index: Math.floor(Math.random() * numberOfCubes), // Random starting index for each cube
-        tail: [
-          /* array of tail segment indices */
-        ],
-      };
-    });
+    generateRandomActiveCubes();
+    const initialCubesWithTails = Array.from(
+      { length: numberOfTailedCubes },
+      () => {
+        return {
+          index: Math.floor(Math.random() * numberOfCubes), // Random starting index for each cube
+          tail: [
+            /* array of tail segment indices */
+          ],
+        };
+      }
+    );
     setCubesWithTails(initialCubesWithTails as any);
   }, [numberOfCubes]);
 
@@ -37,7 +38,6 @@ const CubeGrid = () => {
         // Create a new tail that includes the old head
         let newTail = [cube.index, ...cube.tail];
 
-        // Optionally, limit the length of the tail here
         // If you want a tail of length 6:
         newTail = newTail.slice(0, 6);
 
@@ -52,11 +52,12 @@ const CubeGrid = () => {
 
   // calculates the color based on the percentage
   const getColor = (percentage: number) => {
-    if (percentage >= 83.333) return "#f9ff00";
-    if (percentage >= 66.666) return "#9b9f0a";
-    if (percentage >= 50) return "#6e700e";
-    if (percentage >= 33.333) return "#3f4014";
-    if (percentage >= 16.666) return "#272717";
+    if (percentage >= 83.333) return "#17171e";
+    if (percentage >= 66.666) return "#272717";
+    if (percentage >= 50) return "#3f4014";
+    if (percentage >= 33.333) return "#6e700e";
+    if (percentage >= 16.666) return "#9b9f0a";
+    if (percentage >= 0) return "#f9ff00";
     return "#17171e";
   };
 
@@ -66,19 +67,21 @@ const CubeGrid = () => {
       for (let cube of cubesWithTails as any) {
         if (cube.index === index) {
           // Head of the tail
-          return "#f9ff00"; // Color for head
+          return "#f9ff00";
         } else if (cube.tail.includes(index)) {
           // Part of the tail
-          // Determine the position in the tail to calculate color
           const positionInTail = cube.tail.indexOf(index);
           const percentage = (positionInTail / cube.tail.length) * 100;
           return getColor(percentage);
         }
       }
+      // Check if index is part of any random active cube
+      if (randomActiveCubes.includes(index)) return "#f9ff00";
+
       // Default color for cubes not in any tail
       return "#17171e";
     },
-    [cubesWithTails]
+    [cubesWithTails, randomActiveCubes, getColor]
   );
 
   // sets the active cube
@@ -105,7 +108,3 @@ export default CubeGrid;
 // A FAZER
 
 // - [ ] Os cubos aleatorios devem ter um efeito de fade in e fade out na cor
-// - [ ] Melhorar as cores do tail
-
-// Logic for multiple tails has been added, but it need improvements
-// Add the other logics ( random active cubes, fade in and fade out, etc)
