@@ -17,13 +17,12 @@ const CubeGrid = () => {
   } = useCubeGrid();
 
   useEffect(() => {
-    // Let's say you want 5 cubes with tails
     generateRandomActiveCubes();
     const initialCubesWithTails = Array.from(
       { length: numberOfTailedCubes },
       () => {
         return {
-          index: Math.floor(Math.random() * numberOfCubes), // Random starting index for each cube
+          index: Math.floor(Math.random() * numberOfCubes),
           tail: [
             /* array of tail segment indices */
           ],
@@ -71,7 +70,7 @@ const CubeGrid = () => {
   };
 
   const calculateCubeColor = useCallback(
-    (index: any) => {
+    (index: number) => {
       // Check if index is part of any tail
       for (let cube of cubesWithTails as any) {
         if (cube.index === index) {
@@ -113,7 +112,5 @@ const CubeGrid = () => {
 };
 
 export default CubeGrid;
-
-// A FAZER
 
 // - [ ] Os cubos aleatorios devem ter um efeito de fade in e fade out na cor
