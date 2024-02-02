@@ -7,7 +7,7 @@ import { Container } from "./styles";
 
 const CubeGrid = () => {
   const [cubesWithTails, setCubesWithTails] = useState([]);
-  const numberOfTailedCubes = 10;
+  const numberOfTailedCubes = 12;
 
   const {
     numberOfCubes,
